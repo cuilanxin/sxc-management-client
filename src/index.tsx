@@ -8,8 +8,8 @@ import dayjs from 'dayjs';
 import zhCN from 'antd/locale/zh_CN';
 
 import isMobile from 'is-mobile';
-import PcMain from '@/pages/pc/main'
-import MMain from '@/pages/m/main/index'
+import PcMain from '@/pages/main/pc'
+import MMain from '@/pages/main/m'
 // import {
 //   RouterProvider,
 // } from "react-router";

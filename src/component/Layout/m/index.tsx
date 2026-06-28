@@ -5,7 +5,7 @@ import {
   UserOutlined,
   FileSearchOutlined
 } from '@ant-design/icons';
-import { Alert, Button, Dropdown, Layout, Menu, message, Popconfirm, theme } from 'antd';
+import { Alert, Button, Dropdown, Layout, Menu, message, Popconfirm,  theme } from 'antd';
 import { DownOutlined, SmileOutlined } from '@ant-design/icons';
 import {
   Link,
@@ -14,8 +14,8 @@ import {
 
 import { useNavigate } from 'react-router';
 import { isPersonnelManagementMenu } from '@/commen';
-import { UserInfo } from '@/api/types';
 import { getUserInfo } from '@/api/personnel-management';
+import { UserInfo } from '@/api/types';
 import { exitUser } from '@/api/login';
 
 const { Header, Sider } = Layout;
@@ -39,7 +39,6 @@ function App(props: any) {
     } else {
       setSelectedKeys([pathname])
     }
-
 
     const cacheToken = localStorage?.getItem('token')
     setToken(cacheToken as string)
@@ -157,7 +156,7 @@ function App(props: any) {
                         title="确定退出登录？"
                         onConfirm={onExit}
                       >
-                        退出登录
+                          退出登录
                       </Popconfirm>
                     </div>
                   ),
@@ -166,8 +165,8 @@ function App(props: any) {
             }}
           >
             <a onClick={(e) => e.preventDefault()} >
-              <span style={{ color: '#4096ff' }}>{userInfo?.name || ''}</span>
-              <DownOutlined />
+                <span style={{ color: '#4096ff' }}>{userInfo?.name || ''}</span>
+                <DownOutlined />
             </a>
           </Dropdown>
         </Header>

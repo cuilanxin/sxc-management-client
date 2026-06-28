@@ -1,25 +1,22 @@
 // Login.tsx
 import React, { useEffect, useState } from 'react';
 import {
-  message,
   Form,
   Input,
   Button
 } from 'antd';
 
-import { useNavigate } from 'react-router';
-import { apiFetch } from '@/api/utils';
 import style from './index.module.less';
+import { RegisterParams } from '@/api/types';
+import { useLogin } from '../useLodinHook';
 
 
 const prefix = 'login-container'
 
 const Login: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-  const [isRegister, setIsRegister] = useState<Boolean>(false)
-  const [form] = Form.useForm();
-
-  const navigate = useNavigate();
+  const [isRegister, setIsRegister] = useState<boolean>(false)
+  const [form] = Form.useForm<RegisterParams>();
+  const { onLogin, loading } = useLogin(isRegister)
 
   useEffect(() => {
     const result = localStorage.getItem('register')
@@ -35,38 +32,7 @@ const Login: React.FC = () => {
 
   // 表单提交处理
   const onFinish = async () => {
-    setLoading(true);
-    const messageClose = message.loading('登录中...', 0)
-    form.validateFields().then(values => {
-      const registerUrl = 'register'
-      const loginUrl = 'login'
-      const apiUrl = isRegister ? registerUrl : loginUrl
-
-      apiFetch('/api/auth/' + apiUrl, values).then(val => {
-        if (isRegister) {
-          localStorage.removeItem('register')
-          message.success('注册成功！请在页面刷新后登录。', 2000, () => {
-            window.location.reload()
-          });
-        } else {
-          localStorage.setItem('token', val.token);
-          localStorage.setItem('username', val.username);
-          localStorage.setItem('permission', val.permission);
-          message.success('登录成功！', 1000, () => {
-            navigate('/');
-          });
-          // cookieStore.set('token', val.token)
-        }
-      }, err => {
-        message.error(err.message || '网络异常稍后重试！');
-      }).finally(() => {
-        messageClose()
-        setLoading(false);
-      })
-    }, err => {
-      messageClose()
-      setLoading(false);
-    })
+    onLogin(form)
   };
 
 
@@ -141,23 +107,8 @@ const Login: React.FC = () => {
         </Button>
 
         <div className={style["social"]}>
-          <Button
-            block
-            disabled
-            type="primary"
-            className={style["go"]}
-          >
-            忘记密码？
-          </Button>
-
-          <Button
-            block
-            disabled
-            type="primary"
-            className={style["fb"]}
-          >
-            联系网管！
-          </Button>
+          <div className={style["go"]}>忘记密码？</div>
+          <div className={style["fb"]}>联系网管！</div>
         </div>
       </Form>
     </div>

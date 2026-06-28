@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import NotFound from '@/NotFound'
-import Login from '@/pages/pc/login'
+import Layout from '@/component/Layout/m'
+import Login from '@/pages/login/m'
 
 
 
@@ -16,21 +17,17 @@ const router = createBrowserRouter([
     // ],
   },
 
-  // {
-  //   // path: "",
-  //   children: [
-  //     { index: true, Component: ProjectsHome },
-  //     {
-  //       // again, no path, just a component for the layout
-  //       Component: ProjectLayout,
-  //       children: [
-  //         { path: ":pid", Component: Project },
-  //         { path: ":pid/edit", Component: EditProject },
-  //       ],
-  //     },
-  //   ],
-  // },
-
+ {
+    children: [
+      {
+        Component: Layout,
+        children: [
+          { path: "/task-management", Component: Login },
+          // { path: ":pid/edit", Component: EditProject },
+        ],
+      },
+    ],
+  },
   {
     path: "*",
     Component: NotFound,
@@ -42,5 +39,6 @@ const router = createBrowserRouter([
     // ],
   },
 ]);
+
 
 export default router
