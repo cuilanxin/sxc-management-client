@@ -1,15 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ConfigProvider } from 'antd';
+import 'dayjs/locale/zh-cn';
+import dayjs from 'dayjs';
+import zhCN from 'antd/locale/zh_CN';
+
+import isMobile from 'is-mobile';
+import PcMain from '@/pc/main'
+import MMain from '@/m/main/index'
+// import {
+//   RouterProvider,
+// } from "react-router";
+
+
+dayjs.locale('zh-cn');
+
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ConfigProvider locale={zhCN}>
+      {isMobile() ? <MMain /> : <PcMain />}
+    </ConfigProvider>
   </React.StrictMode>
 );
 
