@@ -31,14 +31,15 @@ module.exports = {
   },
 
   devServer: {
-    proxy: {
-      '/api': {
-        target: 'https://xxx:8080',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
-      },
-    },
+    // port: 5173, 
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://xxx:8080',
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/api': '',
+    //     },
+    //   },
+    // },
   },
 };

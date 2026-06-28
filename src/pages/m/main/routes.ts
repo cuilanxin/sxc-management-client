@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import NotFound from '@/NotFound'
 
-import Login from '@/m/login'
+import Login from '@/pages/m/login'
 
 
 
