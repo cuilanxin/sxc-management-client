@@ -1,22 +1,15 @@
 import { useEffect, useState } from 'react';
 import {
   ExclamationCircleOutlined,
-  MenuFoldOutlined,
   MenuUnfoldOutlined,
-  MenuOutlined,
-  UserOutlined,
-  FileSearchOutlined
 } from '@ant-design/icons';
-import { Alert, Button, Dropdown, Layout, Menu, message, Modal, Popconfirm, Space, theme } from 'antd';
-import { DownOutlined, SmileOutlined } from '@ant-design/icons';
+import { Alert, Dropdown, Layout, message, Modal } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import {
-  Link,
   Outlet,
-  UIMatch,
 } from 'react-router'
 
-import { useNavigate, useLocation, useMatches } from 'react-router';
-import { isPersonnelManagementMenu } from '@/commen';
+import { useNavigate, useMatches } from 'react-router';
 import { getUserInfo } from '@/api/personnel-management';
 import { UserInfo } from '@/api/types';
 import { exitUser } from '@/api/login';
@@ -25,12 +18,9 @@ import style from './index.module.less'
 import MenuDrawer from './MenuDrawer';
 
 
-const { Header, Sider } = Layout;
+const { Header } = Layout;
 
 function App(props: any) {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
   const [token, setToken] = useState<string>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -93,7 +83,6 @@ function App(props: any) {
         <Header
           className={style['layout-header']}
         >
-          {/* color: '#1677ff' */}
           <MenuUnfoldOutlined
             onClick={() => setOpenDrawer(true)}
             style={{ fontSize: 26, }}
@@ -129,15 +118,17 @@ function App(props: any) {
             </a>
           </Dropdown>
         </Header>
+        
         <Alert
-            title={`
+          title={`
               任务总数：${userInfo?.taskInfo?.taskNum || 0}，
               未完成任务数：${userInfo?.taskInfo?.taskUnfinishedNum || 0}，
               待确认任务数：${userInfo?.taskInfo?.taskUnConfirmedNum || 0}
             `}
-            type="info"
-            variant="filled"
-          />
+          type="info"
+          variant="filled"
+        />
+
         <Outlet />
       </Layout>
     </Layout>

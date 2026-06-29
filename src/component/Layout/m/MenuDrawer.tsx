@@ -1,9 +1,6 @@
 import { Drawer, DrawerProps, Menu } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  MenuOutlined,
   UserOutlined,
   FileSearchOutlined
 } from '@ant-design/icons';

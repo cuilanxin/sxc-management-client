@@ -14,9 +14,7 @@ const layout = {
   // wrapperCol: { span: 16 },
 };
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
+
 
 interface FormValues extends Omit<GetTasksParams, 'createdAt' | 'downAt' | 'deadlineAt'> {
   createdAt: [Moment, Moment,],

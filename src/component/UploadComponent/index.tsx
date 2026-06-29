@@ -1,6 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd'
-import React from 'react'
+
 
 function UploadComponent() {
   return (
