@@ -120,7 +120,8 @@ function App(props: any) {
             background: colorBgContainer,
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            boxShadow: '0 2px 4px #00000014'
           }}
         >
           <Button
@@ -165,7 +166,10 @@ function App(props: any) {
               ]
             }}
           >
-            <a onClick={(e) => e.preventDefault()} >
+            <a
+              onClick={(e) => e.preventDefault()} 
+              style={{ lineHeight: 'normal' }} 
+            >
               <span style={{ color: '#4096ff' }}>{userInfo?.name || ''}</span>
               <DownOutlined />
             </a>

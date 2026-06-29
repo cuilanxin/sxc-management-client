@@ -18,7 +18,7 @@ export function useLogin(isRegister: boolean) {
       (isRegister ? register(values) : login(values)).then(val => {
         if (isRegister) {
           localStorage.removeItem('register')
-          message.success('注册成功！请在页面刷新后登录。', 2, () => {
+          message.success('注册成功！请在页面刷新后登录。', 1, () => {
             window.location.reload()
           });
         } else {
