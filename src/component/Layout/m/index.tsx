@@ -129,15 +129,15 @@ function App(props: any) {
             </a>
           </Dropdown>
         </Header>
-        {/* <Alert
+        <Alert
             title={`
               任务总数：${userInfo?.taskInfo?.taskNum || 0}，
-              未完成任务数量：${userInfo?.taskInfo?.taskUnfinishedNum || 0}，
-              待确认任务数量：${userInfo?.taskInfo?.taskUnConfirmedNum || 0}
+              未完成任务数：${userInfo?.taskInfo?.taskUnfinishedNum || 0}，
+              待确认任务数：${userInfo?.taskInfo?.taskUnConfirmedNum || 0}
             `}
             type="info"
             variant="filled"
-          /> */}
+          />
         <Outlet />
       </Layout>
     </Layout>
