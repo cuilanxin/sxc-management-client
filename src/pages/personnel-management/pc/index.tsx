@@ -150,7 +150,8 @@ function PersonnelManagement() {
           {...layout}
           labelCol={{ flex: '0 0 120px' }}
           form={form}
-          name="TaskManagement"
+          colon={false}
+          name="PersonnelManagement"
         // style={{ maxWidth: 600 }}
         >
           <Row>

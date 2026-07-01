@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { Row, Col, Card, Button, Popconfirm, DatePicker, Tag, Form, Input, Select, Space, Table, message } from 'antd';
-import type { TableProps, TablePaginationConfig } from 'antd';
+import type { TableProps } from 'antd';
 import TaskDetailDrawer from './TaskDetailDrawer';
-import { useGetUsers } from '../useTaskManagementHook';
-import { GetTasksParams, Task, taskStatusOptions } from '@/api/types';
+import { useGetUsers, useGetTasks, FormValues } from '../useTaskManagementHook';
+import { ACTION_TYPE, Task, taskStatusOptions } from '@/api/types';
 import { isTaskManagementSearchForm } from '@/commen';
-import { Moment } from 'moment';
-import { deleteTask, getTasks } from '@/api/task-management';
+import { deleteTask } from '@/api/task-management';
 
 
 const layout = {
@@ -16,92 +15,37 @@ const layout = {
 
 
 
-interface FormValues extends Omit<GetTasksParams, 'createdAt' | 'downAt' | 'deadlineAt'> {
-  createdAt: [Moment, Moment,],
-  downAt: [Moment, Moment,],
-  deadlineAt: [Moment, Moment,],
-}
-
 function TaskManagement() {
   const [form] = Form.useForm<FormValues>();
-  const [open, setOpen] = useState(false)
   const [taskDetial, setTaskDetial] = useState<Task | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [formValues, setFormValues] = useState({})
-  const [tableParams, setTableParams] = useState({
-    pagination: {
-      // current: 1,
-      // pageSize: 10,
-      total: 0,
-    },
-    data: new Array<Task>(),
-  })
-
+  const [actionType, setActionType] = useState<ACTION_TYPE | null>(null)
   const { usersLoading, users, currentUser } = useGetUsers();
+  const { getTaskLoading, dataSource, pagination, getData } = useGetTasks()
 
 
 
-  const getTableData = (pageNum: number, pageSize: number, values: GetTasksParams) => {
-    setLoading(true)
-
-    getTasks(values).then((val) => {
-      setTableParams({
-        pagination: {
-          //   current: pageNum,
-          //   pageSize,
-          total: val.tasks.length || 0,
-        },
-        data: val.tasks,
-      })
-      setFormValues(values)
-    }, err => {
-      message.error(err.message || '网络异常稍后重试！')
-    }).finally(() => {
-      setLoading(false)
-    })
-  }
-
-  const onSubmit = () => {
-    const { createdAt, downAt, deadlineAt, ...values } = form.getFieldsValue()
-    const createdAtFromat = createdAt 
-    ? [createdAt[0].format('YYYY-MM-DD HH:mm:ss'), createdAt[1].format('YYYY-MM-DD HH:mm:ss')] as [string, string]
-    : undefined
-    const downAtFormat = downAt 
-    ? [downAt[0].format('YYYY-MM-DD HH:mm:ss'), downAt[1].format('YYYY-MM-DD HH:mm:ss')] as [string, string]
-    : undefined
-    const deadlineAtFormat = deadlineAt 
-    ? [deadlineAt[0].format('YYYY-MM-DD HH:mm:ss'), deadlineAt[1].format('YYYY-MM-DD HH:mm:ss')] as [string, string]
-    : undefined
-
-    getTableData(1, 10, {
-      ...values,
-      createdAt: createdAtFromat,
-      downAt: downAtFormat,
-      deadlineAt: deadlineAtFormat
-    })
+  const onSearch = () => {
+    getData(1, 10, form.getFieldsValue())
   };
 
   const onReset = () => {
     form.resetFields();
   };
 
-  const onTableChange = (pagination: TablePaginationConfig = tableParams.pagination) => {
-    getTableData(pagination.current!, pagination.pageSize!, formValues)
-  };
 
   const onDrawerOpen = () => {
-    setOpen(true)
+    setActionType(ACTION_TYPE.CREATE)
   }
 
   const onDrawerClose = () => {
-    setOpen(false)
+    setActionType(null)
     setTaskDetial(null)
   }
 
   const onDelete = (id: string) => {
     return deleteTask({ id }).then((val) => {
       message.success('删除成功！')
-      onTableChange()
+      onSearch()
     }, err => {
       message.error(err.message || '网络错误')
       return Promise.reject(err)
@@ -161,18 +105,24 @@ function TaskManagement() {
       key: 'action',
       render: (_, record) => (
         <Space size="medium">
-          <Popconfirm title='确认删除？' onConfirm={() => onDelete(record.id as string)}>
-            <a>删除</a>
-          </Popconfirm>
           {/* {(
             <Popconfirm title='确认删除？' onConfirm={() => onDelete(record.id as string)}>
               <a>彻底删除</a>
             </Popconfirm>
           )} */}
+          <a href="#JavaScript" onClick={() => {
+            setActionType(ACTION_TYPE.VIEW)
+            setTaskDetial(record)
+          }}>查看</a>
+
           <a onClick={() => {
-            setOpen(true);
+            setActionType(ACTION_TYPE.EDIT)
             setTaskDetial(record)
           }}>编辑</a>
+
+          <Popconfirm title='确认删除？' onConfirm={() => onDelete(record.id as string)}>
+            <a>删除</a>
+          </Popconfirm>
         </Space>
       ),
     },
@@ -187,6 +137,8 @@ function TaskManagement() {
           {...layout}
           labelCol={{ flex: '0 0 120px' }}
           form={form}
+          colon={false}
+
           name="TaskManagement"
         // style={{ maxWidth: 600 }}
         >
@@ -237,26 +189,44 @@ function TaskManagement() {
 
             <Col span={8}>
               <Form.Item name="createdAt" label="创建时间">
-                <DatePicker.RangePicker style={{ width: '100%' }} showTime format="YYYY-MM-DD HH:mm:ss" />
+                <DatePicker.RangePicker
+                  style={{ width: '100%' }}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                />
               </Form.Item>
             </Col>
 
             <Col span={8}>
               <Form.Item name="downAt" label="完成时间">
-                <DatePicker.RangePicker style={{ width: '100%' }} showTime format="YYYY-MM-DD HH:mm:ss" />
+                <DatePicker.RangePicker
+                  style={{ width: '100%' }}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                />
               </Form.Item>
             </Col>
 
             <Col span={8}>
               <Form.Item name="deadlineAt" label="截止时间">
-                <DatePicker.RangePicker style={{ width: '100%' }} showTime format="YYYY-MM-DD HH:mm:ss" />
+                <DatePicker.RangePicker
+                  style={{ width: '100%' }}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                />
               </Form.Item>
             </Col>
 
             <Col span={8} offset={isShowSearchForm ? 0 : 16}>
               <Form.Item style={{ textAlign: 'end' }}>
-                <Button onClick={onReset}>重置</Button>
-                <Button type='primary' onClick={onSubmit} style={{ marginLeft: 8 }}>查询</Button>
+                <Button
+                  onClick={onReset}>重置</Button>
+                <Button
+                  type='primary'
+                  loading={getTaskLoading}
+                  onClick={onSearch}
+                  style={{ marginLeft: 8 }}
+                >查询</Button>
               </Form.Item>
             </Col>
           </Row>
@@ -264,9 +234,10 @@ function TaskManagement() {
       </Card>
 
       <TaskDetailDrawer
-        open={open}
+        open={!!actionType}
+        actionType={actionType}
         userList={users}
-        onTableChange={onTableChange}
+        onSearch={onSearch}
         taskDetial={taskDetial}
         onClose={onDrawerClose}
       />
@@ -280,10 +251,13 @@ function TaskManagement() {
           // scroll={{ y: 55 * 10 }}
           columns={columns}
           rowKey={'id'}
-          dataSource={tableParams.data}
-          pagination={tableParams.pagination}
-          loading={loading}
-          onChange={onTableChange}
+          dataSource={dataSource}
+          pagination={{
+            onChange: getData,
+            ...pagination,
+          }}
+          // pagination={tableParams.pagination}
+          loading={getTaskLoading}
         />
       </Card>
     </div>

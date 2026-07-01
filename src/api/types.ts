@@ -1,7 +1,14 @@
+export enum ACTION_TYPE {
+  'CREATE' = 'CREATE',
+  'EDIT' = 'EDIT',
+  'VIEW' = 'VIEW'
+} 
+
 
 export interface Page {
   page?: number;
   pageSize?: number;
+  total?: number,
 }
 
 export enum PERMISSION_ENUM {
@@ -134,7 +141,7 @@ export const taskStatusOptions = [
 ]
 
 
-export interface GetTasksParams {
+export interface GetTasksParams extends Page{
   /**
    * 任务ID
    */
@@ -200,7 +207,7 @@ export interface Task extends Omit<GetTasksParams, 'createdAt' | 'downAt' | 'dea
   taskProgress?: string
 }
 
-export interface GetTasksResponse {
+export interface GetTasksResponse extends Page {
   tasks: Task[]
 }
 

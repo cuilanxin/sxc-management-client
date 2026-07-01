@@ -127,9 +127,11 @@ function App(props: any) {
             `}
           type="info"
           variant="filled"
+          // style={{ marginBottom: 16 }}
         />
 
         <Outlet />
+        
       </Layout>
     </Layout>
   );

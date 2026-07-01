@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Drawer, Row, Col, Button, DatePicker, Form, Input, Select, message, type DrawerProps } from 'antd';
 // import UploadComponent from '@/component/UploadComponent';
 import moment from 'moment';
-import { Task, taskStatusOptions } from '@/api/types';
+import { ACTION_TYPE, Task, taskStatusOptions } from '@/api/types';
 import { DefaultOptionType } from 'antd/es/select';
 import { createTask, updateTask } from '@/api/task-management';
 
@@ -13,12 +13,13 @@ import { createTask, updateTask } from '@/api/task-management';
 interface TaskDetailDrawerProps extends DrawerProps {
   taskDetial: Task | null,
   userList: DefaultOptionType[],
-  onTableChange: (...params: any) => void
+  onSearch: (...params: any) => void
+  actionType: ACTION_TYPE | null
 }
 
 
 function TaskDetailDrawer(props: TaskDetailDrawerProps) {
-  const { userList, taskDetial, onTableChange, ...drawerProps } = props;
+  const { userList, taskDetial, onSearch, actionType, ...drawerProps } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false)
 
@@ -46,7 +47,7 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
       (taskDetial ? updateTask(params) : createTask(params)).then(() => {
           message.success(taskDetial ? '编辑成功' : '创建成功')
           drawerProps.onClose!(e)
-          onTableChange()
+          onSearch()
         }, err => {
           message.error(err.message || '网络异常稍后重试！')
         }).finally(() => {
@@ -57,10 +58,11 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
     })
   }
 
+  const disabled = actionType === ACTION_TYPE.VIEW
   return (
     <Drawer
       title={taskDetial ? "编辑任务" : "新建任务"}
-      width="65%"
+      size="65%"
       footer={(
         <div style={{ textAlign: 'end' }}>
           <Button
@@ -70,7 +72,15 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
             取消
           </Button>
 
-          <Button loading={loading} onClick={onSubmit} type="primary">提交</Button>
+          {disabled || (
+            <Button 
+              loading={loading} 
+              onClick={onSubmit} 
+              type="primary"
+            >
+              提交
+            </Button>
+          )}
         </div>
       )}
       {...drawerProps}
@@ -86,14 +96,23 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
         <Row>
           <Col span={8}>
             <Form.Item name="taskName" label="任务名称" rules={[{ required: true, }]}>
-              <Input placeholder='请输入' allowClear />
+              <Input 
+                placeholder='请输入' 
+                allowClear 
+                disabled={disabled} 
+              />
             </Form.Item>
           </Col>
 
           {taskDetial && (
             <Col span={8}>
               <Form.Item name="taskStatus" label="任务状态" rules={[{ required: true, }]}>
-                <Select placeholder='请选择' options={taskStatusOptions} allowClear />
+                <Select 
+                  placeholder='请选择' 
+                  options={taskStatusOptions} 
+                  allowClear
+                  disabled={disabled} 
+                />
               </Form.Item>
             </Col>
           )}
@@ -102,6 +121,7 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
             <Form.Item name="recipientId" label="接收人" rules={[{ required: true, }]}>
               <Select
                 options={userList}
+                disabled={disabled}
                 placeholder='请输入'
                 allowClear
               />
@@ -110,7 +130,7 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
 
           <Col span={8}>
             <Form.Item name="deadlineAt" label="截止时间" rules={[{ required: true, }]}>
-              <DatePicker disabled={!!taskDetial} style={{ width: '100%' }} showTime format="YYYY-MM-DD HH:mm:ss" />
+              <DatePicker disabled={!!taskDetial || disabled} style={{ width: '100%' }} showTime format="YYYY-MM-DD HH:mm:ss" />
             </Form.Item>
           </Col>
 
@@ -122,13 +142,13 @@ function TaskDetailDrawer(props: TaskDetailDrawerProps) {
 
           <Col span={24}>
             <Form.Item rules={[{ required: true, }]} labelCol={{ flex: '0 0 120px' }} name="taskInfo" label="任务介绍">
-              <Input.TextArea placeholder='请输入' allowClear></Input.TextArea>
+              <Input.TextArea disabled={disabled} placeholder='请输入' allowClear></Input.TextArea>
             </Form.Item>
           </Col>
 
           <Col span={24}>
             <Form.Item labelCol={{ flex: '0 0 120px' }} name="taskProgress" label="任务进度">
-              <Input.TextArea placeholder='请输入' allowClear></Input.TextArea>
+              <Input.TextArea disabled={disabled} placeholder='请输入' allowClear></Input.TextArea>
             </Form.Item>
           </Col>
         </Row>

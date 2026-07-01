@@ -2,6 +2,8 @@ import {
   RouterProvider,
 } from "react-router";
 import router from './routes'
+import 'antd-mobile/dist/antd-mobile.css'
+
 
 
 
