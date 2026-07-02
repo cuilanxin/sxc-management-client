@@ -1,8 +1,11 @@
+import 'antd-mobile/es/global'; 
 import {
   RouterProvider,
 } from "react-router";
 import router from './routes'
-import 'antd-mobile/dist/antd-mobile.css'
+import './index.css';
+
+// import 'antd-mobile/umd/antd-mobile'
 
 
 

@@ -12,6 +12,15 @@ module.exports = {
           },
         },
       },
+
+      // modifyLessModuleRule(lessModuleRule) {
+      //     lessModuleRule.exclude = /[\\/]node_modules[\\/](?!antd-mobile)[\\/]/;
+      //     return lessModuleRule;
+      //   },
+        //   modifyLessRule(lessRule) {
+        //   lessRule.exclude = /antd-mobile/;
+        //   return lessRule;
+        // },
     },
   ],
 

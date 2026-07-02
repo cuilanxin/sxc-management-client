@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { ConfigProvider } from 'antd';
-import 'dayjs/locale/zh-cn';
-import dayjs from 'dayjs';
-import zhCN from 'antd/locale/zh_CN';
+
 
 import isMobile from 'is-mobile';
 import PcMain from '@/pages/main/pc'
@@ -15,7 +11,6 @@ import MMain from '@/pages/main/m'
 // } from "react-router";
 
 
-dayjs.locale('zh-cn');
 
 
 
@@ -27,9 +22,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <ConfigProvider locale={zhCN}>
-      {isMobile() ? <MMain /> : <PcMain />}
-    </ConfigProvider>
+    {isMobile() ? <MMain /> : <PcMain />}
   </React.StrictMode>
 );
 

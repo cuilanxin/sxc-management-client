@@ -4,7 +4,7 @@ import {
   Form,
   Input,
   Button
-} from 'antd';
+} from 'antd-mobile';
 
 import style from './index.module.less';
 import { useLogin } from '../useLodinHook';
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
 
   // 表单提交处理
   const onFinish = async () => {
-    onLogin(form)
+    onLogin(form as any)
   };
 
 
@@ -46,10 +46,13 @@ const Login: React.FC = () => {
 
       <Form
         className={style[prefix + '-form']}
-        // labelCol={{ flex: '0 0 120px' }}
+        mode='card'
         form={form}
-        colon={false}
-        layout="vertical"
+        style={{
+          '--prefix-width': "50px"
+        }}
+        // colon={false}
+        layout='horizontal'
         name="Login"
       >
         <h3>{isRegister ? 'Register Here' : 'Login Here'}</h3>
@@ -61,7 +64,7 @@ const Login: React.FC = () => {
             label="名字"
             rules={[{ required: true }]}
           >
-            <Input size='large' style={{ height: 50 }} placeholder='请输入名字...' allowClear />
+            <Input placeholder='请输入名字...' />
           </Form.Item>
         )}
 
@@ -71,7 +74,9 @@ const Login: React.FC = () => {
           label="账号"
           rules={[{ required: true }]}
         >
-          <Input size='large' style={{ height: 50 }} placeholder='请输入账号...' allowClear />
+          <Input
+            placeholder='请输入账号...'
+          />
         </Form.Item>
 
         <Form.Item
@@ -80,7 +85,10 @@ const Login: React.FC = () => {
           name="password"
           label="密码"
         >
-          <Input size='large' style={{ height: 50 }} placeholder='请输入密码...' allowClear type="password" />
+          <Input
+            placeholder='请输入密码...'
+            type="password"
+          />
         </Form.Item>
 
         {isRegister && (
@@ -91,40 +99,40 @@ const Login: React.FC = () => {
             name="permission"
             label="账号权限"
           >
-            <Input size='large' style={{ height: 50 }} placeholder='请输入权限...' allowClear />
+            <Input
+              placeholder='请输入权限...'
+            />
           </Form.Item>
         )}
 
-        <Button
-          size='large'
-          className={style[prefix + '-form-button']}
-          style={{ height: 58 }}
-          block
-          type="primary"
-          loading={loading}
-          onClick={onFinish}
-        >
-          {isRegister ? 'Register' : 'Login In'}
-        </Button>
+        <Form.Item className={style[prefix + '-form-submit']}>
+
+          <Button
+            size='large'
+            // className={style[prefix + '-form-submit']}
+            // style={{ height: 58 }}
+            block
+            color="primary"
+            loading={loading}
+            onClick={onFinish}
+          >
+            {isRegister ? 'Register' : 'Login In'}
+          </Button>
+        </Form.Item>
+
 
         <div className={style["social"]}>
-          <Button
-            block
-            disabled
-            type="primary"
-            className={style["go"]}
+          <span
+            color="primary"
           >
             忘记密码？
-          </Button>
+          </span>
 
-          <Button
-            block
-            disabled
-            type="primary"
-            className={style["fb"]}
+          <span
+            color="primary"
           >
             联系网管！
-          </Button>
+          </span>
         </div>
       </Form>
     </div>

@@ -54,16 +54,29 @@
       line-height: 42px;
       text-align: center;
     }
+
+    &-submit {
+      padding-left: 0;
+      
+      :global {
+        .adm-list-item-content {
+          padding-top: 16px;
+          padding-right: 0;
+        }
+      }
+    }
   }
 
 
   .social {
-    margin-top: 30px;
+    margin-top: 8px;
     display: flex;
     justify-content: space-between;
-  }
 
-  .social .fb {
-    margin-left: 25px;
+    span {
+      width: 50%;
+      text-align: center;
+      opacity: .4;
+    }
   }
 }
