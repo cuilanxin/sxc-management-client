@@ -37,7 +37,7 @@ const Login: React.FC = () => {
   // 表单提交处理
   const onFinish = async () => {
     setLoading(true);
-    const messageClose = Toast.show({
+    Toast.show({
       content: '登录中...',
       duration: 0
     })
@@ -72,11 +72,9 @@ const Login: React.FC = () => {
           content: err.message || '网络异常稍后重试！'
         })
       }).finally(() => {
-        messageClose.close()
         setLoading(false);
       })
     }, err => {
-      messageClose.close()
 
       setLoading(false);
     })
