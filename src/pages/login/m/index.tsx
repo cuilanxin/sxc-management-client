@@ -3,20 +3,24 @@ import React, { useEffect, useState } from 'react';
 import {
   Form,
   Input,
+  Toast,
   Button
 } from 'antd-mobile';
 
 import style from './index.module.less';
-import { useLogin } from '../useLodinHook';
-import { RegisterParams } from '@/api/types';
-
+import { login, register } from "@/api/login";
+import { LoginResponse, RegisterParams } from '@/api/types';
+import { useNavigate } from 'react-router';
 
 const prefix = 'login-container'
 
 const Login: React.FC = () => {
   const [isRegister, setIsRegister] = useState<boolean>(false)
   const [form] = Form.useForm<RegisterParams>();
-  const { onLogin, loading } = useLogin(isRegister)
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
+
+
 
   useEffect(() => {
     const result = localStorage.getItem('register')
@@ -32,7 +36,50 @@ const Login: React.FC = () => {
 
   // 表单提交处理
   const onFinish = async () => {
-    onLogin(form as any)
+    setLoading(true);
+    const messageClose = Toast.show({
+      content: '登录中...',
+      duration: 0
+    })
+    form.validateFields().then(values => {
+
+
+      (isRegister ? register(values) : login(values)).then(val => {
+        if (isRegister) {
+          localStorage.removeItem('register')
+          Toast.show({
+            content: '注册成功！请在页面刷新后登录。',
+            duration: 1,
+            afterClose: () => {
+              window.location.reload()
+            }
+          });
+        } else {
+          localStorage.setItem('token', (val as LoginResponse).token);
+          localStorage.setItem('username', (val as LoginResponse).username);
+          // localStorage.setItem('permission', val.permission);
+          Toast.show({
+            content: '登录成功！',
+            duration: 1,
+            afterClose: () => {
+              navigate('/');
+            }
+          });
+          // cookieStore.set('token', val.token)
+        }
+      }, err => {
+        Toast.show({
+          content: err.message || '网络异常稍后重试！'
+        })
+      }).finally(() => {
+        messageClose.close()
+        setLoading(false);
+      })
+    }, err => {
+      messageClose.close()
+
+      setLoading(false);
+    })
   };
 
 
