@@ -49,7 +49,6 @@ function PersonalCenter() {
     })
   }
 
-  console.log('cuilanxin ', userInfo)
 
   return (
     <div>
