@@ -3,6 +3,7 @@ import NotFound from '@/NotFound'
 import Layout from '@/component/Layout/m'
 import Login from '@/pages/login/m'
 import TaskManagement from '@/pages/task-management/m'
+import PersonalCenter from "@/pages/personal-center/m";
 
 
 const router = createBrowserRouter([
@@ -38,6 +39,13 @@ const router = createBrowserRouter([
             },
             path: "/task-management",
             Component: TaskManagement
+          },
+          {
+            handle: {
+              title: "我的",
+            },
+            path: "/personal-center",
+            Component: PersonalCenter
           },
           // {
           //   handle: {
