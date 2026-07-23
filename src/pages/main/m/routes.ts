@@ -4,6 +4,7 @@ import Layout from '@/component/Layout/m'
 import Login from '@/pages/login/m'
 import TaskManagement from '@/pages/task-management/m'
 import PersonalCenter from "@/pages/personal-center/m";
+import PersonnelManagement from "@/pages/personnel-management/m";
 
 
 const router = createBrowserRouter([
@@ -47,13 +48,13 @@ const router = createBrowserRouter([
             path: "/personal-center",
             Component: PersonalCenter
           },
-          // {
-          //   handle: {
-          //     title: "人员管理",
-          //   },
-          //   path: "/personnel-management",
-          //   Component: PersonnelManagement
-          // },
+          {
+            handle: {
+              title: "人员管理",
+            },
+            path: "/personnel-management",
+            Component: PersonnelManagement
+          },
           // {
           //   handle: {
           //     title: "权限管理",

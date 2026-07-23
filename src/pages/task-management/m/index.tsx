@@ -33,7 +33,9 @@ function TaskManagement() {
 
 
   const getData = (value: string = selectorValue[0]) => {
-
+    Toast.show({
+      content: '搜索中...'
+    })
     return getTasks({
       page: pagination.current.current,
       pageSize: pagination.current.pageSize,
@@ -139,7 +141,7 @@ function TaskManagement() {
             const statusItem = taskStatusOptions.find(it => it.value === item.taskStatus)
 
             return (
-              <div className={style['task-management-card']}>
+              <div key={item.id} className={style['task-management-card']}>
                 <div className={[
                   style['task-management-card-title'],
                   style['task-management-card-bg-' + statusItem?.color],

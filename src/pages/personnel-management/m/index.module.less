@@ -1,21 +1,22 @@
-.task-management-search {
+.personnel-management-search {
   background-color: #fff;
-  border-top: 1px solid #e6e6e6;
   border-radius: 0 0 8px 8px;
+  border-top: 1px solid #e6e6e6;
   margin-bottom: 12px;
   padding: 12px;
+  // border-radius: 28px;
 }
 
 
 
-.task-management-body {
+.personnel-management-body {
   margin-top: 16px;
   padding: 0 12px;
   // padding: 20px;
 }
 
 
-.task-management-card {
+.personnel-management-card {
   margin-top: 16px;
   // border: 1px solid #ddd;
   background-color: #fff;
@@ -50,35 +51,20 @@
   }
 
 
-  &-bg-warning {
-    background-color: #fffbe6;
-  }
 
-  &-bg-success {
+  &-bg-false {
     background-color: #f6ffed;
   }
 
-  &-bg-red {
-    background-color: #fff1f0;
-  }
-
-  &-bg-default {
-    background-color: #e1e1e1;
-  }
-
-  &-text-warning {
-    color: #faad14
-  }
-
-  &-text-success {
+  &-text-false {
     color: #52c41a;
   }
 
-  &-text-red {
-    color: #cf1322;
+  &-bg-true {
+    background-color: #e1e1e1;
   }
 
-  &-text-default {
+  &-text-true {
     color: #666
   }
 
@@ -93,10 +79,11 @@
       display: flex;
       justify-content: space-between;
       align-content: center;
+      margin-bottom: 8px;
     }
 
-    &-line:first-child {
-      margin-bottom: 8px;
+    &-line:last-child {
+      margin-bottom: 0px;
     }
   }
 
@@ -113,7 +100,7 @@
   }
 }
 
-.task-management-card:first-child {
+.personnel-management-card:first-child {
   margin-top: 0;
 }
 
@@ -121,7 +108,7 @@
   font-weight: 500;
 }
 
-.task-management-popup {
+.personnel-management-popup {
   position: absolute;
   top: 12px;
   color: #555;

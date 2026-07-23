@@ -30,6 +30,8 @@ function App(props: any) {
   const currentMatch = matches[matches.length - 1];
 
   useEffect(() => {
+    
+    setActived(window.location.pathname)
     const cacheToken = localStorage?.getItem('token')
     setToken(cacheToken as string)
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DatePickerRef, Popup, DatePicker, Button, Form, Input, Picker, TextArea, Toast, PopupProps, PickerRef } from 'antd-mobile'
 import moment from 'moment';
-import { ACTION_TYPE, Task, taskStatusOptions } from '@/api/types';
+import { action_label, ACTION_TYPE, Task, taskStatusOptions } from '@/api/types';
 import { createTask, updateTask } from '@/api/task-management';
 import { RefObject } from 'react'
 import { getUsers } from '@/api/personnel-management';
@@ -82,9 +82,10 @@ function TaskDetailPopup(props: TaskDetailPopupProps) {
       {...popupProps}
     >
       <div className={style['popup']}>
-        <div className={style['popup-title']}>{taskDetial ? "编辑任务" : "新建任务"}</div>
+        <div className={style['popup-title']}>{action_label[actionType!]+"任务" }</div>
 
         <Form
+          disabled={disabled}
           // mode='card'
           // {...layout}
           form={form}
@@ -96,8 +97,6 @@ function TaskDetailPopup(props: TaskDetailPopupProps) {
           <Form.Item name="taskName" label="任务名称" rules={[{ required: true, }]}>
             <Input
               placeholder='请输入'
-
-              disabled={disabled}
             />
           </Form.Item>
 
@@ -144,11 +143,12 @@ function TaskDetailPopup(props: TaskDetailPopupProps) {
             label="截止时间"
             // rules={[{ required: true }]}
             trigger='onConfirm'
+            
             getValueProps={value => ({ value: value ? new Date(value) : value })}
             normalize={value => (value ? dayjs(value).format('YYYY-MM-DD HH:mm:ss') : value)}
             onClick={(_, ref: RefObject<DatePickerRef>) => ref.current?.open()}
           >
-            <DatePicker precision='minute'>
+            <DatePicker precision='minute' >
               {value => (value ? dayjs(value).format('YYYY-MM-DD HH:mm:ss') : '默认当天23:59:59')}
             </DatePicker>
           </Form.Item>
@@ -160,11 +160,11 @@ function TaskDetailPopup(props: TaskDetailPopupProps) {
           </Col> */}
 
           <Form.Item rules={[{ required: true, }]} name="taskInfo" label="任务介绍">
-            <TextArea rows={4} disabled={disabled} placeholder='请输入' ></TextArea>
+            <TextArea rows={4} placeholder='请输入' ></TextArea>
           </Form.Item>
 
           <Form.Item name="taskProgress" label="任务进度">
-            <TextArea rows={4} disabled={disabled} placeholder='请输入' ></TextArea>
+            <TextArea rows={4}  placeholder='请输入' ></TextArea>
           </Form.Item>
         </Form>
         

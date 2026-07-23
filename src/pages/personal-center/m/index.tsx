@@ -68,9 +68,9 @@ function PersonalCenter() {
       </div>
 
       <List header='任务列表'>
-        <List.Item extra={userInfo?.taskInfo?.taskNum || 0}>任务总数：</List.Item>
-        <List.Item extra={userInfo?.taskInfo?.taskUnfinishedNum || 0}>未完成任务数：</List.Item>
-        <List.Item extra={userInfo?.taskInfo?.taskUnConfirmedNum || 0}>待确认任务数：</List.Item>
+        <List.Item extra={userInfo?.taskInfo?.taskNum || userInfo?.taskNum || 0}>任务总数：</List.Item>
+        <List.Item extra={userInfo?.taskInfo?.taskUnfinishedNum || userInfo?.taskUnfinishedNum || 0}>未完成任务数：</List.Item>
+        <List.Item extra={userInfo?.taskInfo?.taskUnConfirmedNum || userInfo?.taskUnConfirmedNum || 0}>待确认任务数：</List.Item>
       </List>
 
       <List header='操作'>

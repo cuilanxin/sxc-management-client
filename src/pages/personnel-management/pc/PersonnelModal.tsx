@@ -38,9 +38,8 @@ function PersonnelModal(props: PersonnelDrawerProps) {
     
     form.validateFields().then(formValues => {
       const params = {
-        ...(personnel || { }), 
         ...formValues,
-        password: personnel?.password || formValues.password || '123456', 
+        password: formValues.password || '123456', 
       };
       (personnel ? updateUser(params) : register(params)).then(() => {
         message.success(personnel ? '更新成功！' : '创建成功！')
@@ -84,11 +83,11 @@ function PersonnelModal(props: PersonnelDrawerProps) {
       // style={{ maxWidth: 600 }}
       >
         <Form.Item name="name" label="姓名" rules={[{required: true}]}>
-          <Input placeholder='请输入' allowClear />
+          <Input disabled={!!personnel} placeholder='请输入' allowClear />
         </Form.Item>
 
         <Form.Item name="username" label="账号"  rules={[{required: true}]}>
-          <Input placeholder='请输入' allowClear />
+          <Input disabled={!!personnel} placeholder='请输入' allowClear />
         </Form.Item>
 
         <Form.Item name="password" label="密码" extra="默认：123456">

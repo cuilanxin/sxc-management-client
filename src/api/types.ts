@@ -2,8 +2,13 @@ export enum ACTION_TYPE {
   'CREATE' = 'CREATE',
   'EDIT' = 'EDIT',
   'VIEW' = 'VIEW'
-} 
+}
 
+export const action_label: Record<ACTION_TYPE, string> = {
+  'CREATE': '新建',
+  'EDIT': '编辑',
+  'VIEW': '查看'
+}
 
 export interface Page {
   page?: number;
@@ -15,7 +20,7 @@ export enum PERMISSION_ENUM {
   /**
    * 超级管理员
    */
-  'ADMIN' = 'ADMIN',
+  'ADMIN' = 'admin',
   /**
    * 默认
    */
@@ -29,6 +34,7 @@ export enum GENDER_ENUM {
 
 
 export interface UserInfo {
+  password: string;
   /**
    * 名字
    */
@@ -50,6 +56,10 @@ export interface UserInfo {
      * 待确认任务数量：
      */
     taskUnConfirmedNum: number
+    /**
+   * 已完成任务数量
+   */
+    taskConfirmedNum: number
   }
   /**
    * 账号
@@ -63,6 +73,25 @@ export interface UserInfo {
    * 是否注销
    */
   isLogout?: boolean;
+
+
+  // delete next-tag
+  /**
+ * 任务总数：
+ */
+  taskNum?: number
+  /**
+   * 未完成任务数量：
+   */
+  taskUnfinishedNum?: number
+  /**
+   * 待确认任务数量：
+   */
+  taskUnConfirmedNum?: number
+  /**
+   * 已完成任务数量
+   */
+  taskConfirmedNum?: number
 }
 
 
@@ -82,7 +111,7 @@ export interface LoginResponse extends UserInfo {
 }
 
 
-export interface RegisterParams extends LoginParams{
+export interface RegisterParams extends LoginParams {
   /**
    * 名字
    */
@@ -141,7 +170,7 @@ export const taskStatusOptions = [
 ]
 
 
-export interface GetTasksParams extends Page{
+export interface GetTasksParams extends Page {
   /**
    * 任务ID
    */
@@ -189,9 +218,9 @@ export interface Task extends Omit<GetTasksParams, 'createdAt' | 'downAt' | 'dea
    * 任务介绍
    */
   taskInfo?: string;
-    /**
-   * 创建时间
-   */
+  /**
+ * 创建时间
+ */
   createdAt?: string;
   /**
    * 完成时间
@@ -211,10 +240,10 @@ export interface GetTasksResponse extends Page {
   tasks: Task[]
 }
 
-export interface CreateParams extends Pick<Task, 'taskName' | 'taskStatus' | 'recipientId' | 'taskInfo' | 'taskProgress' | 'deadlineAt'>{
+export interface CreateParams extends Pick<Task, 'taskName' | 'taskStatus' | 'recipientId' | 'taskInfo' | 'taskProgress' | 'deadlineAt'> {
 
 }
 
 export interface UpdateTaskParams extends CreateParams, Pick<Task, 'id'> {
-  
+
 }
