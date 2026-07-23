@@ -1,27 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Selector,
-  Space,
   Tag,
   Empty,
   PullToRefresh,
   InfiniteScroll,
-  Toast
+  Toast,
+  Dialog
 } from 'antd-mobile';
-// import { FormValues, useGetTasks, useGetUsers } from '../useTaskManagementHook';
 import { ACTION_TYPE, Task, TASK_STATUS, taskStatusOptions } from '@/api/types';
 
 import style from './index.module.less'
 import { deleteTask, getTasks } from '@/api/task-management';
-// import TaskDetailDrawer from './TaskDetailDrawer';
+import TaskDetailPopup from './TaskDetailPopup';
 
 const username = localStorage.getItem('username')
 
 function TaskManagement() {
   const [taskDetial, setTaskDetial] = useState<Task | null>(null)
   const [actionType, setActionType] = useState<ACTION_TYPE | null>(null)
-  // const { usersLoading, users, currentUser } = useGetUsers();
-  // const { getTaskLoading, dataSource, pagination, getData } = useGetTasks()
   const [selectorValue, setSelectorValue] = useState(['all'])
   const [dataSource, setDataSource] = useState<Task[]>([])
   const pagination = useRef({
@@ -31,31 +28,9 @@ function TaskManagement() {
   })
 
   useEffect(() => {
-    getData()
+    onSelector()
   }, [])
-  
-  const onDelete = (id: string) => {
-    // Modal.confirm({
-    //   title: '确定删除？',
-    //   icon: <ExclamationCircleOutlined />,
-    //   // content: 'Bla bla ...',
-    //   okText: '确认',
-    //   onOk: () => deleteTask({ id }).then((val) => {
-    //     message.success('删除成功！')
-    //     onSearch()
-    //   }, err => {
-    //     message.error(err.message || '网络错误')
-    //     return Promise.reject(err)
-    //   }),
-    //   cancelText: '取消',
-    //   centered: true,
-    // });
-  }
 
-  const onDrawerClose = () => {
-    setTaskDetial(null)
-    setActionType(null)
-  }
 
   const getData = (value: string = selectorValue[0]) => {
 
@@ -74,23 +49,59 @@ function TaskManagement() {
     })
   }
 
-  const onSelector = (arr: string[]) => {
+  const onDelete = (id: string) => {
+    Dialog.confirm({
+      content: '确定删除？',
+      onConfirm: async () => {
+        return deleteTask({ id }).then(() => {
+          Toast.show({
+            content: '删除成功！',
+            duration: 1000,
+            afterClose: () => {
+              onSelector()
+            }
+          })
+        }, err => {
+          Toast.show({
+            content: err.message || '网络错误',
+          })
+          return Promise.reject(err)
+        })
+      },
+    })
+  }
+
+  const onDrawerClose = () => {
+    setTaskDetial(null)
+    setActionType(null)
+  }
+
+  const onSelector = (arr: string[] = selectorValue) => {
     if (!arr?.length) return
-    pagination.current.total = 0
-    pagination.current.current = 1;
+    pagination.current = {
+      total: 0,
+      current: 1,
+      pageSize: 10,
+    }
     setSelectorValue(arr)
-    getData(arr[0])
+    return getData(arr[0])
   }
 
   return (
-    <PullToRefresh onRefresh={() => {
-      pagination.current = {
-        total: 0,
-        current: 1,
-        pageSize: 10,
-      }
-      return getData()
-    }}>
+    <PullToRefresh
+      // @ts-ignore
+      onRefresh={onSelector}
+    >
+
+      <span
+        onClick={() => {
+          setActionType(ACTION_TYPE.CREATE)
+        }}
+        className={style['task-management-popup']}
+      >
+        新增
+      </span>
+
       <div className={style['task-management-search']}>
         <Selector
           options={[
@@ -112,15 +123,14 @@ function TaskManagement() {
         />
       </div>
 
-      {/* 
-      <TaskDetailDrawer
-        open={!!actionType}
+
+      <TaskDetailPopup
+        visible={!!actionType}
         actionType={actionType}
-        userList={users}
-        onSearch={onSearch}
+        onSearch={onSelector}
         taskDetial={taskDetial}
         onClose={onDrawerClose}
-      /> */}
+      />
 
       <div className={style['task-management-body']}>
 

@@ -10,6 +10,7 @@
     "antd": "^6.4.4",
     "antd-mobile": "^5.38.1",
     "craco-less": "^3.0.1",
+    "dayjs": "^1.11.21",
     "is-mobile": "^5.0.0",
     "moment": "^2.30.1",
     "react": "^18",
