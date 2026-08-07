@@ -101,7 +101,8 @@ function App(props: any) {
             {
               key: '/personnel-management',
               icon: <UserOutlined />,
-              isShwo: isPersonnelManagementMenu(userInfo?.permission),
+              isShwo: true,
+              // isShwo: isPersonnelManagementMenu(userInfo?.permission),
               label: <Link to="personnel-management">人员管理</Link>,
             },
             // {

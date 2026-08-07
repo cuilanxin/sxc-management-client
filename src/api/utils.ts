@@ -34,7 +34,7 @@ export function apiFetch(
       headers: {
         'Content-Type': 'application/json',
         ...headers,
-        'X-username': username!,
+        'X-username': encodeURIComponent(username!),
         // authorization
         'Authorization': `Bearer ${token}`,
       },

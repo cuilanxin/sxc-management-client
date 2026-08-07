@@ -93,6 +93,7 @@ export function useGetTasks() {
     pageSize: number = 10,
     value: FormValues = formValues.current!
   ) => {
+    setGetTaskLoading(true)
 
     const formatValues = formatGetTasksParams(value)
 
