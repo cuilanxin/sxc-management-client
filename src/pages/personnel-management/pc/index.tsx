@@ -78,7 +78,7 @@ function PersonnelManagement() {
       onTableChange()
     }, err => {
       message.error(err.message || '网络错误')
-      return Promise.reject(err)
+      // return Promise.reject(err)
     })
   }
 
@@ -88,7 +88,7 @@ function PersonnelManagement() {
       onTableChange()
     }, err => {
       message.error(err.message || '网络错误')
-      return Promise.reject(err)
+      // return Promise.reject(err)
     })
   }
 

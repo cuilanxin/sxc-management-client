@@ -48,7 +48,7 @@ function TaskManagement() {
       onSearch()
     }, err => {
       message.error(err.message || '网络错误')
-      return Promise.reject(err)
+      // return Promise.reject(err)
     })
   }
 
