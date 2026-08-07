@@ -190,7 +190,7 @@ function PersonnelManagement() {
             <Col span={8} offset={8}>
               <Form.Item style={{ textAlign: 'end' }}>
                 <Button onClick={onReset}>重置</Button>
-                <Button type='primary' onClick={onSubmit} style={{ marginLeft: 8 }}>查询</Button>
+                <Button type='primary' loading={loading} onClick={onSubmit} style={{ marginLeft: 8 }}>查询</Button>
               </Form.Item>
             </Col>
           </Row>
