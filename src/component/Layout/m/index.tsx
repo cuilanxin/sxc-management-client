@@ -38,7 +38,7 @@ function App(props: any) {
     const isLoginInPage = window.location.href.includes('login')
 
     if (!cacheToken && !isLoginInPage) {
-      navigate('login');
+      navigate('/login');
     }
   }, [])
 

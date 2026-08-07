@@ -36,7 +36,7 @@ function PersonalCenter() {
               localStorage.removeItem('token')
               localStorage.removeItem('username');
 
-              navigate('login', { replace: true });
+              navigate('/login', { replace: true });
             }
           })
         }, err => {
